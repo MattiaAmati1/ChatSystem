@@ -7,4 +7,4 @@ add_executable(ChatSystem main.cpp
         User.h
         Message.h
         Chat.h
-        cmake-build-debug/ChatRegister.h)
+        ChatRegister.h)
