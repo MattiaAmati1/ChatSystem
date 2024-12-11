@@ -5,15 +5,14 @@
 #include "Message.h"
 #include "User.h"
 
-
 class Chat {
 
     public:
-        Chat(const std::vector<User> &users, const int &id) : users(users), id(id) {
+        Chat(const std::list<User> &users, const int &id) : users(users), id(id) {
             if(this -> users.size() > 2)
-                isGroup = true;
+                group = true;
             else
-                isGroup = false;
+                group = false;
 
             membersAmount = this -> users.size();
             ChatRegister::addChat(*this);
@@ -23,7 +22,7 @@ class Chat {
             users.push_back(firstUser);
             users.push_back(secondUser);
 
-            isGroup = false;
+            group = false;
             membersAmount = users.size();
             ChatRegister::addChat(*this);
         }
@@ -33,18 +32,51 @@ class Chat {
             //will have to notify other user(s)
         }
 
+        void addMember(const User &user) {
+
+            for(const auto& u : users) {
+                if(u.getUsername() == user.getUsername())
+                    return;
+            }
+
+            group = true;
+            users.push_back(user);
+            membersAmount ++;
+
+        }
+
+        void removeMember (const User &user) {
+
+            if(!group) {
+                std::cout << "you can't remove a member from a private chat" << std::endl;
+                return;
+            }
+
+            if(!ChatRegister::isUserInChat(this, user))
+                return;
+
+            users.remove(user);
+            membersAmount--;
+            if(membersAmount <= 2)
+                group = false;
+
+        }
+
+        const bool & isGroup() const { return group; }
+
         const int & getID() const { return id; }
 
-        const std::vector<User> & getUsers() const { return users; }
+        const std::list<User> & getUsers() const { return users; }
 
         ~Chat() {
             ChatRegister::removeChat(*this);
+            chatMessages.clear();
         }
 
     private:
-        std::vector<User> users;
-        std::vector<Message> chatMessages;
-        bool isGroup;
+        std::list<User> users;
+        std::list<Message> chatMessages;
+        bool group;
         int membersAmount;
         int id;
         std::string name;
