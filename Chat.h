@@ -28,7 +28,14 @@ class Chat {
             ChatRegister::addChat(*this);
         }
 
+        void addMessage(const Message &message) {
+            chatMessages.push_back(message);
+            //will have to notify other user(s)
+        }
+
         const int & getID() const { return id; }
+
+        const std::vector<User> & getUsers() const { return users; }
 
         ~Chat() {
             ChatRegister::removeChat(*this);

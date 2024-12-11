@@ -24,6 +24,17 @@ class ChatRegister {
             chats.push_back(c);
         }
 
+        static bool isUserInChat (const Chat &c, const User &user) {
+            for(const auto& chat : chats) {
+                if(chat.getID() == c.getID())
+                    for(const auto& u : chat.getUsers())
+                        if(u.getUsername() == user.getUsername())
+                            return true;
+            }
+
+            return false;
+        }
+
         static void removeChat(const Chat &c) {
             chats.remove(c);
         }
