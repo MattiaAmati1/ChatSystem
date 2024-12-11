@@ -1,21 +1,22 @@
 #ifndef USER_H
 #define USER_H
 #include <string>
-#include <vector>
-#include "Chat.h"
+
+#include "ChatRegister.h"
+#include "ChatRegister.h"
+
 
 class User {
 
     public:
-        explicit User(const std::string &username = "_") : username(username) {
-            activeChats.clear();
-        }
+        explicit User(const std::string &username) : username(username) {}
 
-    ~User() = default;
+        const std::string &getUsername() const { return username; }
+
+        ~User() = default;
 
     private:
         std::string username;
-        std::vector<Chat> activeChats;
 
 };
 

@@ -7,7 +7,7 @@
 class Chat {
 
     public:
-        explicit Chat(const std::vector<User> &users) : users(users) {
+        Chat(const std::vector<User> &users, const int &id) : users(users), id(id) {
             if(this -> users.size() > 2)
                 isGroup = true;
             else
@@ -24,6 +24,8 @@ class Chat {
             membersAmount = users.size();
         }
 
+        const int & getID() const { return id; }
+
         ~Chat() = default;
 
     private:
@@ -31,6 +33,8 @@ class Chat {
         std::vector<Message> chatMessages;
         bool isGroup;
         int membersAmount;
+        int id;
+        std::string name;
 
 };
 
