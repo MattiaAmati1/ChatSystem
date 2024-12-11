@@ -2,10 +2,6 @@
 #define USER_H
 #include <string>
 
-#include "ChatRegister.h"
-#include "ChatRegister.h"
-
-
 class User {
 
     public:

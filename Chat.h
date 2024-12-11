@@ -1,5 +1,7 @@
 #ifndef CHAT_H
 #define CHAT_H
+#include <vector>
+#include "ChatRegister.h"
 #include "Message.h"
 #include "User.h"
 
@@ -14,19 +16,23 @@ class Chat {
                 isGroup = false;
 
             membersAmount = this -> users.size();
+            ChatRegister::addChat(*this);
         }
 
-        Chat(const User& firstUser, const User& secondUser) {
+        Chat(const User& firstUser, const User& secondUser, const int &id) : id(id) {
             users.push_back(firstUser);
             users.push_back(secondUser);
 
             isGroup = false;
             membersAmount = users.size();
+            ChatRegister::addChat(*this);
         }
 
         const int & getID() const { return id; }
 
-        ~Chat() = default;
+        ~Chat() {
+            ChatRegister::removeChat(*this);
+        }
 
     private:
         std::vector<User> users;

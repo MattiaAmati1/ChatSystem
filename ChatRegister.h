@@ -20,8 +20,8 @@ class ChatRegister {
                     return;
                 }
             }
-            chats.push_back(c);
 
+            chats.push_back(c);
         }
 
         static void removeChat(const Chat &c) {
@@ -30,12 +30,10 @@ class ChatRegister {
 
         ~ChatRegister() {
             chats.clear();
-            totalUsers.clear();
         }
 
     private:
         static std::list<Chat> chats;
-        static std::list<User> totalUsers;
 };
 
 
