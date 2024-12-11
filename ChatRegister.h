@@ -1,9 +1,11 @@
 #ifndef CHATREGISTER_H
 #define CHATREGISTER_H
 #include <iostream>
-#include <vector>
+#include <list>
 #include "Chat.h"
 
+
+class Chat;
 
 class ChatRegister {
 
@@ -12,7 +14,7 @@ class ChatRegister {
 
         static void addChat(const Chat &c) {
 
-            for(auto chat : chats) {
+            for(const auto& chat : chats) {
                 if(chat.getID() == c.getID()) {
                     std::cout << "chat " << chat.getID() << " already exists" << std::endl;
                     return;
@@ -22,14 +24,18 @@ class ChatRegister {
 
         }
 
+        static void removeChat(const Chat &c) {
+            chats.remove(c);
+        }
+
         ~ChatRegister() {
             chats.clear();
             totalUsers.clear();
         }
 
     private:
-        static std::vector<Chat> chats;
-        static std::vector<User> totalUsers;
+        static std::list<Chat> chats;
+        static std::list<User> totalUsers;
 };
 
 
