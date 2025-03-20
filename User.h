@@ -1,8 +1,12 @@
 #ifndef USER_H
 #define USER_H
-#include <string>
 
+#include <string>
 #include "Chat.h"
+#include "Message.h"
+#include "ChatRegister.h"
+
+
 
 class User {
 
@@ -18,6 +22,8 @@ class User {
             if(ChatRegister::isUserInChat(chat, this)) {
                 chat.addMessage(message);
             }
+
+            //will have to notify the chat
         }
 
         //users create brand-new chats or groups

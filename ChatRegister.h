@@ -3,18 +3,18 @@
 #include <iostream>
 #include <list>
 #include "Chat.h"
-
-
-class Chat;
+#include "User.h"
 
 class ChatRegister {
 
     public:
-        ChatRegister();
+        ChatRegister(){
+
+        }
 
         static void addChat(const Chat &c) {
 
-            for(const auto& chat : chats) {
+            for(const auto &chat : chats) {
                 if(chat.getID() == c.getID()) {
                     std::cout << "chat " << chat.getID() << " already exists" << std::endl;
                     return;

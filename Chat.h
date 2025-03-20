@@ -8,6 +8,13 @@
 class Chat {
 
     public:
+
+        explicit Chat(const int &id) : id(id){
+            users.clear();
+            membersAmount = 0;
+            group = false;
+        }
+
         Chat(const std::list<User> &users, const int &id) : users(users), id(id) {
             if(this -> users.size() > 2)
                 group = true;
