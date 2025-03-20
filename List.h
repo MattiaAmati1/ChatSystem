@@ -64,6 +64,21 @@ class List {
 
         }
 
+        bool contains(T item) {
+            if(size == 0) {
+                return false;
+            }
+            Node<T> *temp = head;
+            while(temp != nullptr) {
+                if(temp->item() == item) { //assumes that the T type has a well-defined == operator
+                    return true;
+                }
+                temp = temp->next();
+            }
+
+            return false;
+        }
+
         const int &getSize() const { return size; }
 
         void clear() {

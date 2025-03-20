@@ -1,51 +1,35 @@
 #ifndef CHATREGISTER_H
 #define CHATREGISTER_H
-#include <iostream>
-#include <list>
+
 #include "Chat.h"
-#include "User.h"
+#include "List.h"
+
 
 class ChatRegister {
 
-    public:
-        ChatRegister(){
+public:
+    ChatRegister() = default;
 
-        }
+    static void addChat(const Chat &c) {
+        if(chats.contains(c))
+            return;
 
-        static void addChat(const Chat &c) {
+        chats.add(c);
+    }
+    static bool isUserInChat (const Chat &c, const User &user) { return c.getUserList().contains(user); }
 
-            for(const auto &chat : chats) {
-                if(chat.getID() == c.getID()) {
-                    std::cout << "chat " << chat.getID() << " already exists" << std::endl;
-                    return;
-                }
-            }
+    static void removeChat(const Chat &c) {
+        chats.remove(c);
+    }
 
-            chats.push_back(c);
-        }
+    ~ChatRegister() {
+        chats.clear();
+    }
 
-        static bool isUserInChat (const Chat &c, const User &user) {
-            for(const auto& chat : chats) {
-                if(chat.getID() == c.getID())
-                    for(const auto& u : chat.getUsers())
-                        if(u.getUsername() == user.getUsername())
-                            return true;
-            }
-
-            return false;
-        }
-
-        static void removeChat(const Chat &c) {
-            chats.remove(c);
-        }
-
-        ~ChatRegister() {
-            chats.clear();
-        }
-
-    private:
-        static std::list<Chat> chats;
+private:
+    static List<Chat> chats;
 };
+
 
 
 

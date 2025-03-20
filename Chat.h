@@ -1,9 +1,10 @@
 #ifndef CHAT_H
 #define CHAT_H
-#include "ChatRegister.h"
 #include "List.h"
 #include "Message.h"
 #include "User.h"
+
+class ChatRegister;
 
 class Chat {
 
@@ -41,10 +42,8 @@ class Chat {
 
         void addMember(const User &user) {
 
-            for(const auto& u : users) {
-                if(u.getUsername() == user.getUsername())
-                    return;
-            }
+            if(users.contains(user))
+                return;
 
             group = true;
             users.add(user);
@@ -73,7 +72,7 @@ class Chat {
 
         const int & getID() const { return id; }
 
-        const List<User> & getUserList() const { return users; }
+        List<User> getUserList() const { return users; }
 
         const int getMembersNumber() const { return  membersAmount; }
 
@@ -92,5 +91,7 @@ class Chat {
         std::string name;
 
 };
+
+
 
 #endif //CHAT_H
