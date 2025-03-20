@@ -11,7 +11,9 @@ set(SOURCE_FILES main.cpp
         Chat.h
         ChatRegister.h)
 
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES}
+        List.h
+        Node.h)
 add_library(${CMAKE_PROJECT_NAME}_lib ${SOURCE_FILES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${CMAKE_PROJECT_NAME}_lib)
 

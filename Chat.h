@@ -1,7 +1,7 @@
 #ifndef CHAT_H
 #define CHAT_H
-#include <vector>
 #include "ChatRegister.h"
+#include "List.h"
 #include "Message.h"
 #include "User.h"
 
@@ -10,32 +10,32 @@ class Chat {
     public:
 
         explicit Chat(const int &id) : id(id){
-            users.clear();
+            users = List<User>();
             membersAmount = 0;
             group = false;
         }
 
-        Chat(const std::list<User> &users, const int &id) : users(users), id(id) {
-            if(this -> users.size() > 2)
+        Chat(const List<User> &users, const int &id) : users(users), id(id) {
+            if(this -> users.getSize() > 2)
                 group = true;
             else
                 group = false;
 
-            membersAmount = this -> users.size();
+            membersAmount = this -> users.getSize();
             ChatRegister::addChat(*this);
         }
 
         Chat(const User& firstUser, const User& secondUser, const int &id) : id(id) {
-            users.push_back(firstUser);
-            users.push_back(secondUser);
+            users.add(firstUser);
+            users.add(secondUser);
 
             group = false;
-            membersAmount = users.size();
+            membersAmount = users.getSize();
             ChatRegister::addChat(*this);
         }
 
         void addMessage(const Message &message) {
-            chatMessages.push_back(message);
+            chatMessages.add(message);
             //will have to notify other user(s)
         }
 
@@ -47,7 +47,7 @@ class Chat {
             }
 
             group = true;
-            users.push_back(user);
+            users.add(user);
             membersAmount ++;
 
         }
@@ -73,7 +73,9 @@ class Chat {
 
         const int & getID() const { return id; }
 
-        const std::list<User> & getUsers() const { return users; }
+        const List<User> & getUserList() const { return users; }
+
+        const int getMembersNumber() const { return  membersAmount; }
 
         ~Chat() {
             ChatRegister::removeChat(*this);
@@ -81,8 +83,9 @@ class Chat {
         }
 
     private:
-        std::list<User> users;
-        std::list<Message> chatMessages;
+
+        List<User> users;
+        List<Message> chatMessages;
         bool group;
         int membersAmount;
         int id;

@@ -10,11 +10,18 @@ class ChatSuite : public testing::Test {
 };
 
 TEST_F(ChatSuite, TestAddRemove){
+    const std::string name = "testname";
+    User user(name);
 
-    User user("testuser");
-    c->addMember(user); //addMember uses push_back method
-    std::string name = c->getUsers().back().getUsername();
-    ASSERT_EQ(user.getUsername(), name);
+
+    c -> addMember(user); //elements are always added in the back
+    ASSERT_EQ(c -> getMembersNumber(), 1); //tests if size has been increased
+    ASSERT_EQ(c -> getUserList().last() -> getValue().getUsername(), name);
+
+    c -> removeMember(user);
+    ASSERT_EQ(c -> getMembersNumber(), 0);
+    ASSERT_EQ(c -> getUserList().last(), nullptr);
+
 }
 
 
