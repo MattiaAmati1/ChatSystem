@@ -1,5 +1,6 @@
 #ifndef CHAT_H
 #define CHAT_H
+
 #include "List.h"
 #include "Message.h"
 #include "User.h"
@@ -26,7 +27,7 @@ class Chat {
             ChatRegister::addChat(*this);
         }
 
-        Chat(const User& firstUser, const User& secondUser, const int &id) : id(id) {
+        Chat(User& firstUser, const User& secondUser, const int &id) : id(id) {
             users.add(firstUser);
             users.add(secondUser);
 

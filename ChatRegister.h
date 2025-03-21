@@ -3,6 +3,7 @@
 
 #include "Chat.h"
 #include "List.h"
+#include "User.h"
 
 
 class ChatRegister {
