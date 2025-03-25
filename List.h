@@ -1,6 +1,5 @@
 #ifndef LIST_H
 #define LIST_H
-#include "Node.h"
 
 /*
  Personal implementation of a linked list, allows only
@@ -8,69 +7,87 @@
  than an STL data structure
  */
 
+template <typename T>
+class Node {
+public:
+    explicit Node(T value) : value(value), nextItem(nullptr){}
+
+    ~Node() { }
+
+    Node<T>* next(){ return nextItem; }
+    T getValue(){ return value; }
+    void updateValue(T newValue) { this -> value = newValue; }
+    void setNext(Node<T>* next) { this -> nextItem = next; }
+
+private:
+    T value;
+    Node<T>* nextItem;
+};
+
 template<typename T>
 class List {
 
     public:
-        List() : size(0) {
-            head = nullptr;
-            tail = nullptr;
-            tail -> setNext(nullptr);
-        }
 
-        ~List() {
-            clear();
-            delete head;
-            delete tail;
-
-        }
-
-        void add(T item) {
-            Node<T> *newNode = new Node<T>(item);
-            if(size == 0) {
-                head = newNode;
-                tail = newNode;
-                size++;
-            }else {
-                tail -> setNext(newNode);
-                tail = tail->next();
-                tail -> setNext(nullptr);
-                size++;
-            }
+        explicit List(T firstValue) : size(1) {
+            Node<T>* newNode = new Node<T>(firstValue);
+            head = newNode;
+            head -> setNext(nullptr);
 
             delete newNode;
         }
 
-        void remove(T item) {
-            if(size == 0) {
+        ~List() {
+            /*
+            clear();
+            delete head;
+            delete tail;
+            */
+        }
+
+
+        void add(T item) {
+            Node<T>* newNode = new Node<T>(item);
+
+            newNode ->setNext(head);
+            head = newNode;
+
+            delete newNode;
+        }
+
+
+        void remove(T target) {
+            if(size <= 1) {
                 return;
             }
 
-            Node<T> *temp = head;
-            while(temp->next() != nullptr) {
+            Node<T> *prevTmp = head;
+            Node<T> *tmp = head -> next();
+            while(tmp -> next() != nullptr) {
 
-                if(temp->next()->item() == item) {
-                    temp -> setNext(temp->next()->next());
-                    delete temp->next();
+                if(tmp -> getValue() == target) { //requires a == operator for type T
+                    prevTmp ->setNext(tmp -> next()); //prev -> next = tmp, tmp is to be removed
                     size--;
-                    delete temp;
+                    delete tmp;
+                    delete prevTmp;
                     return;
                 }
 
-                temp = temp->next();
+                prevTmp = prevTmp -> next();
+                tmp = tmp -> next();
             }
 
-            delete temp;
-
+            delete prevTmp;
+            delete tmp;
         }
 
         bool contains(T item) {
-            if(size == 0) {
+            if(size <= 1) {
                 return false;
             }
             Node<T> *temp = head;
             while(temp != nullptr) {
-                if(temp->item() == item) { //assumes that the T type has a well-defined == operator
+                if(temp -> getValue() == item) { //assumes that the T type has a well-defined == operator
                     return true;
                 }
                 temp = temp->next();
@@ -84,24 +101,16 @@ class List {
         void clear() {
             Node<T> *firstTmp = head;
             Node<T> *secondTmp = head -> next();
-            while(secondTmp -> next() != nullptr) {
-                delete firstTmp;
-                firstTmp = secondTmp -> next();
-            }
 
-            delete firstTmp; //deleting null pointers has no effect
-            delete secondTmp;
         }
 
         Node<T> *first() const { return head; }
-        Node<T> *last() const { return tail; }
+
+
 
     private:
         int size;
         Node<T>* head;
-        Node<T>* tail;
 };
-
-
 
 #endif //LIST_H
