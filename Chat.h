@@ -1,39 +1,34 @@
 #ifndef CHAT_H
 #define CHAT_H
 
+#include <utility>
 #include "List.h"
 #include "Message.h"
 #include "User.h"
+#include "ChatRegister.h"
 
-class ChatRegister;
 
-class Chat {
+class Chat : public Observer{
 
     public:
 
-        explicit Chat(const int &id) : id(id){
-            users = List<User>();
-            membersAmount = 0;
-            group = false;
+        Chat(User& firstUser, User& secondUser, const Message &firstMessage, const int &id) : id(id), users(List<User>(firstUser)),
+                                                                                            chatMessages(List<Message>(std::move(firstMessage))){
+
+
         }
 
-        Chat(const List<User> &users, const int &id) : users(users), id(id) {
-            if(this -> users.getSize() > 2)
-                group = true;
-            else
-                group = false;
-
-            membersAmount = this -> users.getSize();
-            ChatRegister::addChat(*this);
+        void attach() override{
+            subject -> subscribe(this);
         }
 
-        Chat(User& firstUser, const User& secondUser, const int &id) : id(id) {
-            users.add(firstUser);
-            users.add(secondUser);
+        void detach() override{
+            subject -> unsubscribe(this);
+        }
 
-            group = false;
-            membersAmount = users.getSize();
-            ChatRegister::addChat(*this);
+        void update() override{
+            //will receive different types of update commands
+            //based on the action performed by the user
         }
 
         void addMessage(const Message &message) {
@@ -43,12 +38,7 @@ class Chat {
 
         void addMember(const User &user) {
 
-            if(users.contains(user))
-                return;
 
-            group = true;
-            users.add(user);
-            membersAmount ++;
 
         }
 
@@ -59,14 +49,6 @@ class Chat {
                 return;
             }
 
-            if(!ChatRegister::isUserInChat(this, user))
-                return;
-
-            users.remove(user);
-            membersAmount--;
-            if(membersAmount <= 2)
-                group = false;
-
         }
 
         const bool & isGroup() const { return group; }
@@ -76,6 +58,8 @@ class Chat {
         List<User> getUserList() const { return users; }
 
         const int getMembersNumber() const { return  membersAmount; }
+
+        const bool operator==(const Chat &right) const { return this -> id == right.id; }
 
         ~Chat() {
             ChatRegister::removeChat(*this);
@@ -90,6 +74,8 @@ class Chat {
         int membersAmount;
         int id;
         std::string name;
+
+        User * subject;
 
 };
 

@@ -7,13 +7,10 @@
 class Message {
 
     public:
-        Message(const std::string &msg, const User& sender, const User& receiver)
-                    : text(msg), sender(sender), receiver(receiver) {}
-
+        explicit Message(const std::string &text) : text(text) {}
     private:
         std::string text;
-        User sender;
-        User receiver;
+
 
 };
 

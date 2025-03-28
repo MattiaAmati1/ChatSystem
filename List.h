@@ -8,20 +8,9 @@
  */
 
 template <typename T>
-class Node {
-public:
-    explicit Node(T value) : value(value), nextItem(nullptr){}
-
-    ~Node() { }
-
-    Node<T>* next(){ return nextItem; }
-    T getValue(){ return value; }
-    void updateValue(T newValue) { this -> value = newValue; }
-    void setNext(Node<T>* next) { this -> nextItem = next; }
-
-private:
+struct Node {
     T value;
-    Node<T>* nextItem;
+    Node<T>* next;
 };
 
 template<typename T>
@@ -30,55 +19,52 @@ class List {
     public:
 
         explicit List(T firstValue) : size(1) {
-            Node<T>* newNode = new Node<T>(firstValue);
+            Node<T>* newNode;
             head = newNode;
-            head -> setNext(nullptr);
+            head -> value = firstValue;
+            head -> next = nullptr;
 
             delete newNode;
         }
 
-        ~List() {
-            /*
-            clear();
-            delete head;
-            delete tail;
-            */
-        }
-
+        ~List() = default;
 
         void add(T item) {
-            Node<T>* newNode = new Node<T>(item);
+            Node<T>* newNode;
 
-            newNode ->setNext(head);
+            newNode -> value = item;
+            newNode -> next = head;
             head = newNode;
 
             delete newNode;
         }
 
 
-        void remove(T target) {
+        bool remove(T target) {
             if(size <= 1) {
-                return;
+                return false;
             }
 
             Node<T> *prevTmp = head;
-            Node<T> *tmp = head -> next();
-            while(tmp -> next() != nullptr) {
+            Node<T> *tmp = head -> next;
+            while(tmp -> next != nullptr) {
 
-                if(tmp -> getValue() == target) { //requires a == operator for type T
-                    prevTmp ->setNext(tmp -> next()); //prev -> next = tmp, tmp is to be removed
+                if(tmp -> value == target) { //requires a == operator for type T
+                    prevTmp -> next = tmp -> next; //prev -> next = tmp, tmp is to be removed
                     size--;
                     delete tmp;
                     delete prevTmp;
-                    return;
+                    return true;
                 }
 
-                prevTmp = prevTmp -> next();
-                tmp = tmp -> next();
+                prevTmp = prevTmp -> next;
+                tmp = tmp -> next;
             }
 
             delete prevTmp;
             delete tmp;
+
+            return false;
         }
 
         bool contains(T item) {
@@ -87,24 +73,26 @@ class List {
             }
             Node<T> *temp = head;
             while(temp != nullptr) {
-                if(temp -> getValue() == item) { //assumes that the T type has a well-defined == operator
+                if(temp->value == item) { //assumes that the T type has a well-defined == operator
                     return true;
                 }
-                temp = temp->next();
+                temp = temp -> next;
             }
 
             return false;
         }
 
-        const int &getSize() const { return size; }
+
 
         void clear() {
             Node<T> *firstTmp = head;
-            Node<T> *secondTmp = head -> next();
+            Node<T> *secondTmp = head -> next;
 
         }
 
         Node<T> *first() const { return head; }
+
+        const int &getSize() const { return size; }
 
 
 

@@ -3,16 +3,6 @@
 
 int main() {
 
-    int* p = nullptr;
-    int n = 10;
-    List<int> l (n);
-    l.add((int) 15);
-    l.add((int) 20);
-
-    l.remove((int )15);
-    l.remove((int) 111);
-
-
 
     return 0;
 }

@@ -5,8 +5,7 @@
 #include "List.h"
 #include "User.h"
 
-
-class ChatRegister {
+class ChatRegister : public Observer{
 
 public:
     ChatRegister() = default;

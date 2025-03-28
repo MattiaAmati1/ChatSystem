@@ -2,36 +2,50 @@
 #define USER_H
 
 #include <string>
-#include "Chat.h"
+#include <list>
 #include "Message.h"
-#include "ChatRegister.h"
+#include "observer/Subject.h"
 
 
-
-class User {
+class User : public Subject{
 
     public:
+
+        void subscribe(Observer *o) override{
+            observers.push_back(o);
+        }
+
+        void unsubscribe(Observer* o) override{
+            observers.remove(o);
+        }
+
+        void notify() override{
+            for(auto observer : observers)
+                observer->update();
+        }
+
         explicit User(const std::string &username) : username(username) {}
 
         const std::string &getUsername() const { return username; }
 
         //users send messages in existing chats
 
-        void sendMessage(Chat &chat, const Message &message) {
+        void sendMessage(const User &receiver, const std::string& textMessage) {
 
-            if(ChatRegister::isUserInChat(chat, this)) {
-                chat.addMessage(message);
-            }
 
-            //will have to notify the chat
         }
 
         //users create brand-new chats or groups
 
-        ~User() = default;
+        virtual ~User() = default;
+
+        bool operator==(const User &right){
+            return this -> username == right.username;
+        }
 
     private:
         std::string username;
+        std::list<Observer*> observers;
 
 };
 
