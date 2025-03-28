@@ -10,12 +10,25 @@ class ChatRegister : public Observer{
 public:
     ChatRegister() = default;
 
-    static void addChat(const Chat &c) {
-        if(chats.contains(c))
-            return;
+    void attach() override { subject ->subscribe(this); }
+    void detach() override { subject ->unsubscribe(this); }
+    void update(UpdateType type){
+        switch(type){
 
-        chats.add(c);
+            case UpdateType::CHAT_CREATED:
+                break;
+            case UpdateType::MESSAGE_SENT:
+                break;
+            case UpdateType::MEMBER_ADDED:
+                break;
+            case UpdateType::MEMBER_REMOVED:
+                break;
+            case UpdateType::DEFAULT:
+                break;
+        }
     }
+
+    static void addChat(const Chat &c) {}
     static bool isUserInChat (const Chat &c, const User &user) { return c.getUserList().contains(user); }
 
     static void removeChat(const Chat &c) {
@@ -28,6 +41,7 @@ public:
 
 private:
     static List<Chat> chats;
+    Chat * subject;
 };
 
 

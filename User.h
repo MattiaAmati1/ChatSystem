@@ -6,6 +6,11 @@
 #include "Message.h"
 #include "observer/Subject.h"
 
+/*
+ Every possible action is called by an user first,
+ which notifies the corresponding method in the other classes.
+
+ */
 
 class User : public Subject{
 
@@ -19,9 +24,9 @@ class User : public Subject{
             observers.remove(o);
         }
 
-        void notify() override{
+        void notify(UpdateType type) override{
             for(auto observer : observers)
-                observer->update();
+                observer -> update(type);
         }
 
         explicit User(const std::string &username) : username(username) {}
@@ -32,10 +37,14 @@ class User : public Subject{
 
         void sendMessage(const User &receiver, const std::string& textMessage) {
 
+            notify(UpdateType::MESSAGE_SENT);
 
         }
 
         //users create brand-new chats or groups
+
+
+
 
         virtual ~User() = default;
 
