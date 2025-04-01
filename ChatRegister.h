@@ -7,41 +7,51 @@
 
 class ChatRegister : public Observer{
 
-public:
-    ChatRegister() = default;
+    public:
+        ChatRegister() = default;
 
-    void attach() override { subject ->subscribe(this); }
-    void detach() override { subject ->unsubscribe(this); }
-    void update(UpdateType type){
-        switch(type){
-
-            case UpdateType::CHAT_CREATED:
-                break;
-            case UpdateType::MESSAGE_SENT:
-                break;
-            case UpdateType::MEMBER_ADDED:
-                break;
-            case UpdateType::MEMBER_REMOVED:
-                break;
-            case UpdateType::DEFAULT:
-                break;
+        void attach() override {
+            for(auto subject : subjects)
+                subject -> subscribe(this);
         }
-    }
 
-    static void addChat(const Chat &c) {}
-    static bool isUserInChat (const Chat &c, const User &user) { return c.getUserList().contains(user); }
+        void detach() override {
+            for(auto subject : subjects)
+                subject ->unsubscribe(this);
+        }
 
-    static void removeChat(const Chat &c) {
-        chats.remove(c);
-    }
+        void update(UpdateType type) override{
+            switch(type){
 
-    ~ChatRegister() {
-        chats.clear();
-    }
+                case UpdateType::CHAT_CREATED:
+                    break;
+                case UpdateType::MESSAGE_SENT:
+                    dataInput("data.txt");
+                    if(!dataInput.is_open())
+                        return;
 
-private:
-    static List<Chat> chats;
-    Chat * subject;
+
+
+                    break;
+                case UpdateType::MEMBER_ADDED:
+
+                    break;
+                case UpdateType::MEMBER_REMOVED:
+                    break;
+                case UpdateType::DEFAULT:
+                    break;
+            }
+        }
+
+
+        ~ChatRegister() {
+
+        }
+
+    private:
+        std::list<User*> subjects;
+        List<Chat> chats;
+        std::ifstream dataInput;
 };
 
 

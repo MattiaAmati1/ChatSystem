@@ -3,13 +3,14 @@
 
 #include <string>
 #include <list>
+#include <fstream>
 #include "Message.h"
 #include "observer/Subject.h"
+
 
 /*
  Every possible action is called by an user first,
  which notifies the corresponding method in the other classes.
-
  */
 
 class User : public Subject{
@@ -37,11 +38,23 @@ class User : public Subject{
 
         void sendMessage(const User &receiver, const std::string& textMessage) {
 
-            notify(UpdateType::MESSAGE_SENT);
+            //write data
+            std::ofstream dataOutput("data.txt");
+            if(!dataOutput.is_open())
+                return;
 
+            dataOutput.clear();
+            dataOutput << receiver.getUsername() << std::endl;
+            dataOutput << "message content, author, date" << std::endl;
+            dataOutput.close();
+            notify(UpdateType::MESSAGE_SENT);
         }
 
         //users create brand-new chats or groups
+
+        void createChat(const User &otherUser){
+            notify(UpdateType::CHAT_CREATED);
+        }
 
 
 

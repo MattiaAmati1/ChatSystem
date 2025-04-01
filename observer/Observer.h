@@ -1,6 +1,7 @@
 #ifndef CHATSYSTEM_OBSERVER_H
 #define CHATSYSTEM_OBSERVER_H
 
+#include "../User.h"
 
 enum class UpdateType{
     CHAT_CREATED,
