@@ -1,12 +1,18 @@
 #include <iostream>
 #include <fstream>
 
+#include "ChatRegister.h"
+#include "User.h"
+
 int main() {
 
 
+    ChatRegister reg;
+    User* firstTestUser = new User("firstTestUser", &reg);
+    User* secondTestUser = new User("secondTestUser", &reg);
 
-
-
+    firstTestUser -> createChat(*secondTestUser, 1);
+    std::cout << reg.getChatList().size() << std::endl;
 
     return 0;
 }

@@ -3,6 +3,8 @@
 
 #include "../User.h"
 
+class User;
+
 enum class UpdateType{
     CHAT_CREATED,
     MESSAGE_SENT,
@@ -17,6 +19,7 @@ class Observer{
         virtual void attach() = 0;
         virtual void detach() = 0;
         virtual void update(UpdateType type) = 0;
+        virtual void update(UpdateType type, User author, User receiver, int id) = 0;
 
         virtual ~Observer() = default;
 };

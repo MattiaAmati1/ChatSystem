@@ -1,57 +1,50 @@
 #ifndef CHATREGISTER_H
 #define CHATREGISTER_H
 
-#include "Chat.h"
-#include "List.h"
-#include "User.h"
 
-class ChatRegister : public Observer{
+#include "Chat.h"
+#include "User.h"
+#include "observer/Observer.h"
+
+class ChatRegister final : public Observer{
 
     public:
         ChatRegister() = default;
 
         void attach() override {
-            for(auto subject : subjects)
+            for(const auto subject : subjects)
                 subject -> subscribe(this);
         }
 
         void detach() override {
-            for(auto subject : subjects)
+            for(const auto subject : subjects)
                 subject ->unsubscribe(this);
         }
 
-        void update(UpdateType type) override{
-            switch(type){
+        void update(const UpdateType type) override{}
 
+        void update(const UpdateType type, const User author, const User receiver, const int id) override {
+            switch(type) {
                 case UpdateType::CHAT_CREATED:
+                    createChat(type, author, receiver, id);
                     break;
-                case UpdateType::MESSAGE_SENT:
-                    dataInput("data.txt");
-                    if(!dataInput.is_open())
-                        return;
 
-
-
-                    break;
-                case UpdateType::MEMBER_ADDED:
-
-                    break;
-                case UpdateType::MEMBER_REMOVED:
-                    break;
-                case UpdateType::DEFAULT:
+                default:
                     break;
             }
         }
 
-
-        ~ChatRegister() {
-
-        }
+        std::list<Chat> getChatList() { return chats; }
+        ~ChatRegister() override = default;
 
     private:
         std::list<User*> subjects;
-        List<Chat> chats;
-        std::ifstream dataInput;
+        std::list<Chat> chats;
+
+        void createChat(const UpdateType type, const User author, const User receiver, const int id) {
+            const Chat chat(author, receiver, id);
+            chats.push_back(chat);
+        }
 };
 
 

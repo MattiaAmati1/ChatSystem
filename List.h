@@ -10,7 +10,7 @@
 template <typename T>
 struct Node {
     T value;
-    Node<T>* next;
+    Node* next;
 };
 
 template<typename T>
@@ -18,6 +18,9 @@ class List {
 
     public:
 
+        List() {
+            this -> size = 0;
+        }
         explicit List(T firstValue) : size(1) {
             Node<T>* newNode;
             head = newNode;
@@ -31,9 +34,9 @@ class List {
 
         void add(T item) {
             Node<T>* newNode;
-
             newNode -> value = item;
             newNode -> next = head;
+
             head = newNode;
 
             delete newNode;
@@ -84,17 +87,8 @@ class List {
 
 
 
-        void clear() {
-            Node<T> *firstTmp = head;
-            Node<T> *secondTmp = head -> next;
-
-        }
-
         Node<T> *first() const { return head; }
-
         const int &getSize() const { return size; }
-
-
 
     private:
         int size;

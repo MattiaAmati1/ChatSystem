@@ -4,18 +4,22 @@
 #include <string>
 #include <list>
 #include <fstream>
-#include "Message.h"
+
 #include "observer/Subject.h"
 
 
 /*
- Every possible action is called by an user first,
+ Every possible action is called by a user first,
  which notifies the corresponding method in the other classes.
  */
 
-class User : public Subject{
+class User final : public Subject{
 
     public:
+
+        User(const std::string &name, Observer* reg) : username(name) {
+            this -> User::subscribe(reg);
+        }
 
         void subscribe(Observer *o) override{
             observers.push_back(o);
@@ -25,12 +29,16 @@ class User : public Subject{
             observers.remove(o);
         }
 
-        void notify(UpdateType type) override{
-            for(auto observer : observers)
+        void notify(const UpdateType type) override{
+            for(const auto observer : observers)
                 observer -> update(type);
         }
 
-        explicit User(const std::string &username) : username(username) {}
+        void notify(const UpdateType type, const User author, const User receiver, const int id) override {
+            for(const auto observer : observers)
+                observer -> update(type, author, receiver, id);
+        }
+
 
         const std::string &getUsername() const { return username; }
 
@@ -38,30 +46,19 @@ class User : public Subject{
 
         void sendMessage(const User &receiver, const std::string& textMessage) {
 
-            //write data
-            std::ofstream dataOutput("data.txt");
-            if(!dataOutput.is_open())
-                return;
 
-            dataOutput.clear();
-            dataOutput << receiver.getUsername() << std::endl;
-            dataOutput << "message content, author, date" << std::endl;
-            dataOutput.close();
-            notify(UpdateType::MESSAGE_SENT);
         }
 
         //users create brand-new chats or groups
 
-        void createChat(const User &otherUser){
-            notify(UpdateType::CHAT_CREATED);
+        void createChat(const User &otherUser, const int &id) {
+
+            notify(UpdateType::CHAT_CREATED, *this, otherUser, id);
         }
 
+        ~User() override = default;
 
-
-
-        virtual ~User() = default;
-
-        bool operator==(const User &right){
+        bool operator==(const User &right) const {
             return this -> username == right.username;
         }
 
