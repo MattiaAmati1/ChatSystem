@@ -8,9 +8,6 @@ class User;
 enum class UpdateType{
     CHAT_CREATED,
     MESSAGE_SENT,
-    MEMBER_ADDED,
-    MEMBER_REMOVED,
-    DEFAULT,
 };
 
 class Observer{

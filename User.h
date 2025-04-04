@@ -13,12 +13,31 @@
  which notifies the corresponding method in the other classes.
  */
 
-class User final : public Subject{
+class User : public Subject, Observer{
 
     public:
 
+        void update(UpdateType type, User author, User receiver, int id) override {}
+        void update(UpdateType type, User author, User receiver, Message textMessage) override {}
+
+        void attach() override {
+            for(auto subject : subjects)
+                subject ->subscribe(this);
+        }
+
+        void detach() override {
+            for(auto subject : subjects)
+                subject -> subscribe(this);
+        }
+
+        void update(UpdateType type) override {
+            if(type == UpdateType::MESSAGE_SENT)
+                unreadMessages++;
+        }
+
         User(const std::string &name, Observer* reg) : username(name) {
             this -> User::subscribe(reg);
+            unreadMessages = 0;
         }
 
         void subscribe(Observer *o) override{
@@ -44,9 +63,6 @@ class User final : public Subject{
                 observer -> update(type, author, receiver, textMessage);
         }
 
-
-        const std::string &getUsername() const { return username; }
-
         //users send messages in existing chats
 
         void sendMessage(const User &receiver, const Message &textMessage) {
@@ -61,15 +77,23 @@ class User final : public Subject{
             notify(UpdateType::CHAT_CREATED, *this, otherUser, id);
         }
 
-        ~User() override = default;
+        const std::string &getUsername() const { return username; }
+        const int getUnreadMessages() const { return unreadMessages; }
 
         bool operator==(const User &right) const {
             return this -> username == right.username;
         }
 
+        ~User() override = default;
+
+        void messageReceived(){
+            unreadMessages++;
+        }
+
     private:
         std::string username;
         std::list<Observer*> observers;
+        std::list<Subject*> subjects;
         int unreadMessages;
 
 };

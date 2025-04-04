@@ -27,7 +27,6 @@ class ChatRegister final : public Observer{
                 case UpdateType::CHAT_CREATED:
                     createChat(type, author, receiver, id);
                     break;
-
                 default:
                     break;
             }
@@ -35,11 +34,11 @@ class ChatRegister final : public Observer{
 
         void update(UpdateType type, User author, User receiver, Message textMessage) override{
             for(auto chat : chats)
-                if((chat.getFirstUser() == author || chat.getFirstUser() == receiver) &&
-                   (chat.getSecondUser() == author || chat.getSecondUser() == receiver ) ) {
+                if(chat.getFirstUser() == author && chat.getSecondUser() == receiver ||
+                   chat.getFirstUser() == author && chat.getFirstUser() == receiver)
                     chat.addMessage(textMessage);
-                    return;
-                }
+
+
         }
 
         std::list<Chat> getChatList() { return chats; }
@@ -49,7 +48,7 @@ class ChatRegister final : public Observer{
         std::list<User*> subjects;
         std::list<Chat> chats;
 
-        void createChat(const UpdateType type, const User author, const User receiver, const int id) {
+        void createChat(const UpdateType type, const User& author, const User& receiver, const int id) {
             const Chat chat(author, receiver, id);
             chats.push_back(chat);
         }

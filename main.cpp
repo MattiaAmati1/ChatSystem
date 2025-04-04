@@ -14,6 +14,11 @@ int main() {
     firstTestUser -> createChat(*secondTestUser, 1);
     std::cout << reg.getChatList().size() << std::endl;
 
+    Message msg("new message", firstTestUser -> getUsername());
+    firstTestUser -> sendMessage(*secondTestUser, msg);
+
+    std::cout << secondTestUser -> getUnreadMessages();
+
     return 0;
 }
 

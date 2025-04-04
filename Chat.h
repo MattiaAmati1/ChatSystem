@@ -6,7 +6,7 @@
 #include "User.h"
 
 
-class Chat {
+class Chat{
 
     public:
 
@@ -14,23 +14,27 @@ class Chat {
             : firstUser(firstUser), secondUser(secondUser), id(id), name(name){}
 
         const int & getID() const { return id; }
-
+        const User &getFirstUser() const { return firstUser; }
+        const User &getSecondUser() const { return secondUser; }
         const bool operator==(const Chat &right) const { return this -> id == right.id; }
 
+        void addMessage(const Message& msg) {
 
-        const User &getFirstUser() const { return firstUser; }
+            chatMessages.push_back(msg);
+            if(msg.getAuthor() == firstUser.getUsername())
+                secondUser.messageReceived();
+            else
+                firstUser.messageReceived();
 
-        const User &getSecondUser() const { return secondUser; }
-
-        void addMessage(const Message& msg) { chatMessages.push_back(msg); }
+        }
 
         ~Chat() = default;
     private:
         std::list<Message> chatMessages;
         User firstUser;
         User secondUser;
-
-    int id;
+        std::list<Observer*> observers;
+        int id;
         std::string name;
 };
 
