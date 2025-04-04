@@ -39,14 +39,19 @@ class User final : public Subject{
                 observer -> update(type, author, receiver, id);
         }
 
+        void notify(const UpdateType type, const User author, const User receiver, const Message textMessage) override{
+            for(const auto observer : observers)
+                observer -> update(type, author, receiver, textMessage);
+        }
+
 
         const std::string &getUsername() const { return username; }
 
         //users send messages in existing chats
 
-        void sendMessage(const User &receiver, const std::string& textMessage) {
+        void sendMessage(const User &receiver, const Message &textMessage) {
 
-
+            notify(UpdateType::MESSAGE_SENT, *this, receiver, textMessage);
         }
 
         //users create brand-new chats or groups
@@ -65,6 +70,7 @@ class User final : public Subject{
     private:
         std::string username;
         std::list<Observer*> observers;
+        int unreadMessages;
 
 };
 

@@ -20,6 +20,7 @@ class Observer{
         virtual void detach() = 0;
         virtual void update(UpdateType type) = 0;
         virtual void update(UpdateType type, User author, User receiver, int id) = 0;
+        virtual void update(UpdateType type, User author, User receiver, Message textMessage) = 0;
 
         virtual ~Observer() = default;
 };

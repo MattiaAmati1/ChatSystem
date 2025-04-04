@@ -17,14 +17,20 @@ class Chat {
 
         const bool operator==(const Chat &right) const { return this -> id == right.id; }
 
+
+        const User &getFirstUser() const { return firstUser; }
+
+        const User &getSecondUser() const { return secondUser; }
+
+        void addMessage(const Message& msg) { chatMessages.push_back(msg); }
+
         ~Chat() = default;
     private:
-
-
         std::list<Message> chatMessages;
         User firstUser;
         User secondUser;
-        int id;
+
+    int id;
         std::string name;
 };
 

@@ -1,7 +1,6 @@
 #ifndef CHATREGISTER_H
 #define CHATREGISTER_H
 
-
 #include "Chat.h"
 #include "User.h"
 #include "observer/Observer.h"
@@ -32,6 +31,15 @@ class ChatRegister final : public Observer{
                 default:
                     break;
             }
+        }
+
+        void update(UpdateType type, User author, User receiver, Message textMessage) override{
+            for(auto chat : chats)
+                if((chat.getFirstUser() == author || chat.getFirstUser() == receiver) &&
+                   (chat.getSecondUser() == author || chat.getSecondUser() == receiver ) ) {
+                    chat.addMessage(textMessage);
+                    return;
+                }
         }
 
         std::list<Chat> getChatList() { return chats; }
