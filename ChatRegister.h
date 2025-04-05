@@ -22,7 +22,7 @@ class ChatRegister final : public Observer{
 
         void update(const UpdateType type) override{}
 
-        void update(const UpdateType type, const User author, const User receiver, const int id) override {
+        void update(const UpdateType type, User* author, User* receiver, const int id) override {
             switch(type) {
                 case UpdateType::CHAT_CREATED:
                     createChat(type, author, receiver, id);
@@ -32,24 +32,24 @@ class ChatRegister final : public Observer{
             }
         }
 
-        void update(UpdateType type, User author, User receiver, Message textMessage) override{
-            for(auto chat : chats)
-                if(chat.getFirstUser() == author && chat.getSecondUser() == receiver ||
-                   chat.getFirstUser() == author && chat.getFirstUser() == receiver)
-                    chat.addMessage(textMessage);
+        void update(UpdateType type, const User* author, const User* receiver, const Message &textMessage) override{
+            for(const auto &chat : chats)
+                if(chat -> getFirstUser() == author && chat -> getSecondUser() == receiver ||
+                   chat -> getFirstUser() == author && chat -> getFirstUser() == receiver)
+                    chat -> addMessage(textMessage);
 
 
         }
 
-        std::list<Chat> getChatList() { return chats; }
+        std::list<Chat*> getChatList() { return chats; }
         ~ChatRegister() override = default;
 
     private:
         std::list<User*> subjects;
-        std::list<Chat> chats;
+        std::list<Chat*> chats;
 
-        void createChat(const UpdateType type, const User& author, const User& receiver, const int id) {
-            const Chat chat(author, receiver, id);
+        void createChat(const UpdateType type, User* author, User* receiver, const int id) {
+            Chat* chat = new Chat(author, receiver, id);
             chats.push_back(chat);
         }
 };

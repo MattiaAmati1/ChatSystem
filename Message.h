@@ -10,15 +10,26 @@
 class Message {
 
     public:
-        Message(const std::string &text, const std::string &author) : text(text), authorName (author) {}
+        Message(const std::string &text, const std::string &author) : text(text), authorName (author) {
+            timestamp = time(nullptr);
+        }
 
         std::string getAuthor() const { return authorName; }
+
+        void show() const {
+            std::cout << text << std::endl;
+            std::cout << "By " << authorName << std::endl;
+            std::cout << "Sent on: " << ctime(&timestamp) << std::endl;
+        }
+
+        bool operator==(const Message &right) const {
+            return text == right.text && authorName == right.authorName && timestamp == right.timestamp;
+        }
 
     private:
         std::string text;
         std::string authorName;
-        //date and time...
-
+        time_t timestamp;
 
 };
 

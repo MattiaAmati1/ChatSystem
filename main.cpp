@@ -6,18 +6,22 @@
 
 int main() {
 
-
+/*
     ChatRegister reg;
     User* firstTestUser = new User("firstTestUser", &reg);
     User* secondTestUser = new User("secondTestUser", &reg);
 
-    firstTestUser -> createChat(*secondTestUser, 1);
+    firstTestUser -> createChat(secondTestUser, 1);
     std::cout << reg.getChatList().size() << std::endl;
 
-    Message msg("new message", firstTestUser -> getUsername());
-    firstTestUser -> sendMessage(*secondTestUser, msg);
+    const Message msg("new message", firstTestUser -> getUsername());
+    firstTestUser -> sendMessage(secondTestUser, msg);
 
-    std::cout << secondTestUser -> getUnreadMessages();
+    reg.getChatList().front() -> getLatestMessage().show();
+
+    std::cout << firstTestUser -> getUnreadMessages() << std::endl;
+    std::cout << secondTestUser -> getUnreadMessages() << std::endl;
+*/
 
     return 0;
 }
