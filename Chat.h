@@ -2,8 +2,6 @@
 #define CHAT_H
 
 #include <utility>
-
-#include "List.h"
 #include "Message.h"
 #include "User.h"
 
@@ -15,10 +13,10 @@ class Chat{
         Chat(User* firstUser, User* secondUser, const int id, std::string  name = "Unnamed Chat")
             : firstUser(firstUser), secondUser(secondUser), id(id), name(std::move(name)){}
 
-        const int & getID() const { return id; }
-        const User* getFirstUser() const { return firstUser; }
-        const User *getSecondUser() const { return secondUser; }
-        const bool operator==(const Chat &right) const { return this -> id == right.id; }
+        [[nodiscard]] const int & getID() const { return id; } //adds a warning if the method is called bypassing the return value
+        [[nodiscard]] const User* getFirstUser() const { return firstUser; }
+        [[nodiscard]] const User *getSecondUser() const { return secondUser; }
+        bool operator==(const Chat &right) const { return this -> id == right.id; }
 
         void addMessage(const Message& msg) {
 
@@ -30,7 +28,7 @@ class Chat{
 
         }
 
-        Message getLatestMessage() const { return chatMessages.back(); }
+        [[nodiscard]] Message getLatestMessage() const { return chatMessages.back(); }
 
         ~Chat() = default;
 

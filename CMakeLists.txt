@@ -9,7 +9,6 @@ set(SOURCE_FILES main.cpp
         User.h
         Message.h
         Chat.h
-        List.h
         ChatRegister.h)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCE_FILES}
