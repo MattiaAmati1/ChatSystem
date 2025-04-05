@@ -1,8 +1,6 @@
 #ifndef CHATSYSTEM_OBSERVER_H
 #define CHATSYSTEM_OBSERVER_H
 
-#include "../User.h"
-
 class User;
 
 enum class UpdateType{

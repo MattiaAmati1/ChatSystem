@@ -32,16 +32,21 @@ class ChatRegister final : public Observer{
             }
         }
 
-        void update(UpdateType type, const User* author, const User* receiver, const Message &textMessage) override{
-            for(const auto &chat : chats)
-                if(chat -> getFirstUser() == author && chat -> getSecondUser() == receiver ||
-                   chat -> getFirstUser() == author && chat -> getFirstUser() == receiver)
-                    chat -> addMessage(textMessage);
-
-
+        void update(const UpdateType type, const User* author, const User* receiver, const Message &textMessage) override{
+            switch(type) {
+                case UpdateType::MESSAGE_SENT:
+                    for(const auto &chat : chats)
+                        if(chat -> getFirstUser() == author && chat -> getSecondUser() == receiver ||
+                           chat -> getFirstUser() == author && chat -> getFirstUser() == receiver)
+                            chat -> addMessage(textMessage);
+                break;
+                default:
+                    break;
+            }
         }
 
-        std::list<Chat*> getChatList() { return chats; }
+        [[nodiscard]] std::list<Chat*> getChatList() const { return chats; }
+        [[nodiscard]] std::list<User*> globalUserList() const { return subjects; }
         ~ChatRegister() override = default;
 
     private:

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <utility>
 
 #include "observer/Subject.h"
 
@@ -15,7 +16,7 @@ class User final : public Subject{
 
     public:
 
-        User(const std::string &name, Observer* reg) : username(name) {
+        User(std::string name, Observer* reg) : username(std::move(name)) {
             this -> User::subscribe(reg);
             unreadMessages = 0;
         }
@@ -57,8 +58,8 @@ class User final : public Subject{
             notify(UpdateType::CHAT_CREATED, this, otherUser, id);
         }
 
-        const std::string &getUsername() const { return username; }
-        const int getUnreadMessages() const { return unreadMessages; }
+        [[nodiscard]] const std::string &getUsername() const { return username; }
+        [[nodiscard]] int getUnreadMessages() const { return unreadMessages; }
 
         bool operator==(const User &right) const {
             return this -> username == right.username;

@@ -5,7 +5,6 @@
 #include "Message.h"
 #include "User.h"
 
-
 class Chat{
 
     public:

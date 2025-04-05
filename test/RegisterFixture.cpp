@@ -2,7 +2,6 @@
 #include "../ChatRegister.h"
 #include "../User.h"
 
-
 class RegisterFixture : public ::testing::Test {
     public:
         void SetUp() override {
@@ -13,7 +12,7 @@ class RegisterFixture : public ::testing::Test {
         void TearDown() override {
             delete firstTestUser;
             delete secondTestUser;
-            }
+        }
 
         User *firstTestUser = nullptr;
         User *secondTestUser = nullptr;
@@ -21,8 +20,6 @@ class RegisterFixture : public ::testing::Test {
         ChatRegister getRegister() { return reg; }
     private:
         ChatRegister reg;
-
-
 };
 
 
@@ -41,5 +38,4 @@ TEST_F(RegisterFixture, SendMessageTest) {
     firstTestUser -> sendMessage(secondTestUser, msg);
     ASSERT_EQ(getRegister().getChatList().front() -> getLatestMessage(), msg);
     ASSERT_EQ(secondTestUser -> getUnreadMessages(), 1);
-
 }
