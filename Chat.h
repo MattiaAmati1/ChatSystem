@@ -24,12 +24,20 @@ class Chat{
                 secondUser -> messageReceived();
             else
                 firstUser -> messageReceived();
+        }
 
+        void showChatContent() const {
+            for (const auto& msg : chatMessages)
+                msg.show();
         }
 
         [[nodiscard]] Message getLatestMessage() const { return chatMessages.back(); }
 
-        ~Chat() = default;
+        ~Chat(){
+            delete firstUser;
+            delete secondUser;
+            chatMessages.clear();
+        };
 
     private:
         std::list<Message> chatMessages;

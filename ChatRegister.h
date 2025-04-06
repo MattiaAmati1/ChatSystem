@@ -49,6 +49,15 @@ class ChatRegister final : public Observer{
         [[nodiscard]] std::list<User*> globalUserList() const { return subjects; }
         ~ChatRegister() override = default;
 
+        Chat* getChatWithUsers(const User* author, const User* receiver) const {
+            for(const auto &chat : chats)
+                if(chat -> getFirstUser() == author && chat -> getSecondUser() == receiver ||
+                    chat -> getFirstUser() == author && chat -> getFirstUser() == receiver)
+                    return chat;
+
+            return nullptr;
+        }
+
     private:
         std::list<User*> subjects;
         std::list<Chat*> chats;
