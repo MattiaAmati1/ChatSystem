@@ -45,14 +45,12 @@ class User final : public Subject{
         }
 
         //users send messages in existing chats
-
         void sendMessage(User *receiver, const Message &textMessage) {
 
             notify(UpdateType::MESSAGE_SENT, this, receiver, textMessage);
         }
 
-        //users create brand-new chats or groups
-
+        //users create brand-new chats
         void createChat(User* otherUser, const int &id) {
 
             notify(UpdateType::CHAT_CREATED, this, otherUser, id);
@@ -67,14 +65,25 @@ class User final : public Subject{
 
         ~User() override = default;
 
-        void messageReceived(){
+        //users receive notifications
+        void messageReceived(const Message &msg){
             unreadMessages++;
+            messagesToRead.push_back(msg);
         }
 
+        //users can view their unread messages
+        void showUnreadMessages(){
+            for(const auto& msg : messagesToRead)
+                msg.show();
+
+            unreadMessages = 0;
+            messagesToRead.clear();
+        }
     private:
         std::string username;
         std::list<Observer*> observers;
         int unreadMessages;
+        std::list<Message> messagesToRead;
 
 };
 

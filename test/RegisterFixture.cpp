@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "../ChatRegister.h"
-#include "../User.h"
 
 class RegisterFixture : public ::testing::Test {
     public:
@@ -38,4 +37,13 @@ TEST_F(RegisterFixture, SendMessageTest) {
     firstTestUser -> sendMessage(secondTestUser, msg);
     ASSERT_EQ(getRegister().getChatList().front() -> getLatestMessage(), msg);
     ASSERT_EQ(secondTestUser -> getUnreadMessages(), 1);
+}
+
+TEST_F(RegisterFixture, ViewUnreadMessageTest){
+    getRegister().getChatList().clear();
+    firstTestUser -> createChat(secondTestUser, 2);
+    const Message msg("testMessage", firstTestUser -> getUsername());
+    firstTestUser -> sendMessage(secondTestUser, msg);
+    secondTestUser -> showUnreadMessages(); //shoud read all unread messages
+    ASSERT_EQ(secondTestUser -> getUnreadMessages(), 0);
 }

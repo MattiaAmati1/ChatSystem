@@ -19,8 +19,8 @@ class Message {
         [[nodiscard]] std::string getAuthor() const { return authorName; }
 
         void show() const {
+            std::cout << "Message from " << authorName << std::endl;
             std::cout << text << std::endl;
-            std::cout << "By " << authorName << std::endl;
             std::cout << "Sent on: " << ctime(&timestamp) << std::endl;
         }
 

@@ -21,6 +21,7 @@ int main() {
         //create a new chat with some other user
         //send a message to some user (in an already created chat)
         //show the entire chat with an user
+        //view all messages not already read
         //log out and close
         //change user, when user changes, display the unread messages amount
 
@@ -36,7 +37,7 @@ int main() {
 
     while (!programTerminated) {
         std::cout << "Enter 1 to create a new chat, 2 to send a message, 3 to change user, 4 to create a new user, "
-                     "5 to show the chat with another user, 0 to quit" << std::endl;
+                     "5 to show the chat with another user, 6 to view all unread messages, 0 to quit" << std::endl;
         std::cout << "Logged in as user: " << loggedUser -> getUsername() << std::endl;
 
         if(!(std::cin >> selection)) { //checks for non-numeric inputs and prevents fatal errors
@@ -60,7 +61,10 @@ int main() {
                     loggedUser -> createChat(tmp, chats);
                     chats++;
                 }
+
+                std::cout << "Chat with user " << name << " created" << std::endl;
                 break;
+
             case 2:
                 std::cout << "Enter username: " << std::endl;
                 std::cin >> name;
@@ -84,7 +88,9 @@ int main() {
                 msg = new Message(messageText, loggedUser -> getUsername());
                 loggedUser -> sendMessage(tmp, *msg);
                 delete msg;
+                std::cout << "Sent message to " << name << std::endl;
                 break;
+
             case 3:
 
                 std::cout << "Enter username: " << std::endl;
@@ -96,9 +102,10 @@ int main() {
                 }
 
                 loggedUser = getUserByName(users, name);
+                std::cout << "Logged in as user: " << name << std::endl;
                 std::cout << "User " << name << " has " << loggedUser -> getUnreadMessages() << " unread messages" << std::endl;
-
                 break;
+
             case 4:
                 std::cout << "Enter username: " << std::endl;
                 std::cin >> name;
@@ -109,7 +116,9 @@ int main() {
 
                 loggedUser = new User(name, &chatRegister);
                 users.push_back(loggedUser);
+                std::cout << "User " << name << " created" << std::endl;
                 break;
+
             case 5:
                 std::cout << "Enter username: " << std::endl;
                 std::cin >> name;
@@ -128,9 +137,14 @@ int main() {
                 chat -> showChatContent();
                 break;
 
+            case 6:
+                loggedUser -> showUnreadMessages();
+                break;
+
             case 0:
                 programTerminated = true;
                 break;
+
             default:
                 std::cout << "Invalid selection" << std::endl;
             break;
@@ -145,11 +159,3 @@ User* getUserByName(const std::list<User*>& users, const std::string& name) {
 
     return nullptr;
 }
-
-/*
- *
- * Classi che rappresentano chat tra utenti. Si deve rappresentare un utente di un sistema,
- * un messaggio di chat da un utente ad un altro, una classe che rappresenta una chat tra due utenti,
- * un registro di tutte le chat fatte.
- *
- */

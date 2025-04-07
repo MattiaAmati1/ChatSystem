@@ -21,9 +21,9 @@ class Chat{
 
             chatMessages.push_back(msg);
             if(msg.getAuthor() == firstUser -> getUsername())
-                secondUser -> messageReceived();
+                secondUser -> messageReceived(msg);
             else
-                firstUser -> messageReceived();
+                firstUser -> messageReceived(msg);
         }
 
         void showChatContent() const {
