@@ -1,7 +1,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 #include <string>
-#include <utility>
+#include <ctime>
 
 /*
  A Message object is used to memorize information relative to a message
@@ -12,17 +12,14 @@
 class Message {
 
     public:
-        Message(std::string text, std::string author) : text(std::move(text)), authorName (std::move(author)) {
+        Message(std::string text, std::string author) : text(std::move(text)),
+                                                        authorName (std::move(author)), read(false){
             timestamp = time(nullptr); //sets timestamp to the date and time the object is instantiated
         }
 
         [[nodiscard]] std::string getAuthor() const { return authorName; }
 
-        void show() const {
-            std::cout << "Message from " << authorName << std::endl;
-            std::cout << text << std::endl;
-            std::cout << "Date and time: " << ctime(&timestamp) << std::endl;
-        }
+        [[nodiscard]] std::string toString() const { return authorName + "\n" + text + "\n" + std::to_string(timestamp); }
 
         bool operator==(const Message &right) const {
             return text == right.text && authorName == right.authorName && timestamp == right.timestamp;
@@ -32,6 +29,7 @@ class Message {
         std::string text;
         std::string authorName;
         time_t timestamp;
+        bool read;
 };
 
 

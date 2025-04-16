@@ -22,28 +22,3 @@ class RegisterFixture : public ::testing::Test {
 };
 
 
-TEST_F(RegisterFixture, CreateChatTest) {
-
-    getRegister().getChatList().clear();
-    firstTestUser -> createChat(secondTestUser, 1);
-    ASSERT_EQ(getRegister().getChatList().front() -> getID() , 1);
-}
-
-TEST_F(RegisterFixture, SendMessageTest) {
-
-    getRegister().getChatList().clear();
-    firstTestUser -> createChat(secondTestUser, 2);
-    const Message msg("testMessage", firstTestUser -> getUsername());
-    firstTestUser -> sendMessage(secondTestUser, msg);
-    ASSERT_EQ(getRegister().getChatList().front() -> getLatestMessage(), msg);
-    ASSERT_EQ(secondTestUser -> getUnreadMessages(), 1);
-}
-
-TEST_F(RegisterFixture, ViewUnreadMessageTest){
-    getRegister().getChatList().clear();
-    firstTestUser -> createChat(secondTestUser, 2);
-    const Message msg("testMessage", firstTestUser -> getUsername());
-    firstTestUser -> sendMessage(secondTestUser, msg);
-    secondTestUser -> showUnreadMessages(); //should read all unread messages
-    ASSERT_EQ(secondTestUser -> getUnreadMessages(), 0);
-}

@@ -26,7 +26,7 @@ int main() {
     std::cout << "Enter username " << std::endl;
     std::string name;
     std::cin >> name;
-    User* loggedUser = new User(name, &chatRegister);
+    User* loggedUser;
     users.push_back(loggedUser);
 
     int selection;
@@ -45,109 +45,6 @@ int main() {
         }
 
         switch (selection) {
-            case 1:
-                std::cout << "Enter username: " << std::endl;
-                std::cin >> name;
-                if(name == loggedUser -> getUsername()) {
-                    std::cout << "Cannot create a chat with yourself" << std::endl;
-                    break;
-                }
-
-                tmp = ChatRegister::getUserByName(users, name);
-                if(tmp == nullptr) {
-                    std::cout << "User " << name << " does not exist" << std::endl;
-                    break;
-                }else if(chatRegister.getChatWithUsers(loggedUser, tmp) != nullptr){
-                    std::cout << "A chat with user " << name << " already exists" << std::endl;
-                    break;
-                }else {
-                    loggedUser -> createChat(tmp, chats);
-                    chats++;
-                }
-
-                std::cout << "Chat with user " << name << " created" << std::endl;
-                break;
-
-            case 2:
-                std::cout << "Enter username: " << std::endl;
-                std::cin >> name;
-                if(name == loggedUser -> getUsername()) {
-                    std::cout << "Cannot send messages to yourself" << std::endl;
-                    break;
-                }
-
-                tmp = ChatRegister::getUserByName(users, name);
-                if(tmp == nullptr) {
-                    std::cout << "User " << name << " does not exist" << std::endl;
-                    break;
-                }
-
-                if(chatRegister.getChatWithUsers(loggedUser, tmp) == nullptr) {
-                    std::cout << "A chat with user " << name << " does not exist" << std::endl;
-                    break;
-                }
-
-                std::cout << "Enter message contents: " << std::endl;
-                std::cin >> messageText;
-                msg = new Message(messageText, loggedUser -> getUsername());
-                loggedUser -> sendMessage(tmp, *msg);
-                delete msg;
-                std::cout << "Sent message to " << name << std::endl;
-                break;
-
-            case 3:
-                std::cout << "Enter username: " << std::endl;
-                std::cin >> name;
-
-                if(ChatRegister::getUserByName(users, name) == nullptr) {
-                    std::cout << "User " << name << " does not exist" << std::endl;
-                    break;
-                }
-
-                loggedUser = ChatRegister::getUserByName(users, name);
-                std::cout << "Logged in as user: " << name << std::endl;
-                std::cout << "User " << name << " has " << loggedUser -> getUnreadMessages()
-                          << " unread messages" << std::endl;
-                break;
-
-            case 4:
-                std::cout << "Enter username: " << std::endl;
-                std::cin >> name;
-                if(ChatRegister::getUserByName(users, name) != nullptr) {
-                    std::cout << "User " << name << " already exists" << std::endl;
-                    break;
-                }
-
-                loggedUser = new User(name, &chatRegister);
-                users.push_back(loggedUser);
-                std::cout << "User " << name << " created" << std::endl;
-                break;
-
-            case 5:
-                std::cout << "Enter username: " << std::endl;
-                std::cin >> name;
-                tmp = ChatRegister::getUserByName(users, name);
-                if(tmp == nullptr) {
-                    std::cout << "User " << name << " does not exist" << std::endl;
-                    break;
-                }
-
-                chat = chatRegister.getChatWithUsers(loggedUser, tmp);
-                if(chat == nullptr) {
-                    std::cout << "A chat with user " << name << " does not exist" << std::endl;
-                    break;
-                }
-
-                chat -> showChatContent();
-                break;
-
-            case 6:
-                loggedUser -> showUnreadMessages();
-                break;
-
-            case 0:
-                programTerminated = true;
-                break;
 
             default:
                 std::cout << "Invalid selection" << std::endl;
