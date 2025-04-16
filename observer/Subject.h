@@ -9,7 +9,6 @@ class Subject{
     public:
         virtual void subscribe(Observer* o) = 0;
         virtual void unsubscribe(Observer* o) = 0;
-        virtual void notify(UpdateType type) = 0;
         virtual void notify(UpdateType type, User* author, User* receiver, int id) = 0;
         virtual void notify(UpdateType type, User* author, User* receiver, Message textMessage) = 0;
 

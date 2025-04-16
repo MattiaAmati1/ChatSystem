@@ -9,7 +9,7 @@
 
 /*
  Every possible action is called by a user first,
- which notifies the corresponding method in the other classes.
+ which notifies the corresponding methods in the other classes.
  */
 
 class User final : public Subject{
@@ -29,11 +29,6 @@ class User final : public Subject{
             observers.remove(o);
         }
 
-        void notify(const UpdateType type) override{
-            for(const auto observer : observers)
-                observer -> update(type);
-        }
-
         void notify(const UpdateType type, User* author, User* receiver, const int id) override {
             for(const auto observer : observers)
                 observer -> update(type, author, receiver, id);
@@ -46,13 +41,11 @@ class User final : public Subject{
 
         //users send messages in existing chats
         void sendMessage(User *receiver, const Message &textMessage) {
-
             notify(UpdateType::MESSAGE_SENT, this, receiver, textMessage);
         }
 
         //users create brand-new chats
         void createChat(User* otherUser, const int &id) {
-
             notify(UpdateType::CHAT_CREATED, this, otherUser, id);
         }
 
@@ -79,12 +72,12 @@ class User final : public Subject{
             unreadMessages = 0;
             messagesToRead.clear();
         }
+
     private:
         std::string username;
         std::list<Observer*> observers;
         int unreadMessages;
         std::list<Message> messagesToRead;
-
 };
 
 #endif //USER_H

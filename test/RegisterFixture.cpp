@@ -44,6 +44,6 @@ TEST_F(RegisterFixture, ViewUnreadMessageTest){
     firstTestUser -> createChat(secondTestUser, 2);
     const Message msg("testMessage", firstTestUser -> getUsername());
     firstTestUser -> sendMessage(secondTestUser, msg);
-    secondTestUser -> showUnreadMessages(); //shoud read all unread messages
+    secondTestUser -> showUnreadMessages(); //should read all unread messages
     ASSERT_EQ(secondTestUser -> getUnreadMessages(), 0);
 }

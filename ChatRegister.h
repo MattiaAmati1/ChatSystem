@@ -39,7 +39,7 @@ class ChatRegister final : public Observer{
                         if(chat -> getFirstUser() == author && chat -> getSecondUser() == receiver ||
                            chat -> getFirstUser() == author && chat -> getFirstUser() == receiver)
                             chat -> addMessage(textMessage);
-                break;
+                    break;
                 default:
                     break;
             }
@@ -55,6 +55,13 @@ class ChatRegister final : public Observer{
                     return chat;
 
             return nullptr;
+        }
+
+        [[nodiscard]] static User* getUserByName(const std::list<User*> &users, const std::string & name){
+                for(const auto user : users)
+                    if(user -> getUsername() == name)
+                        return user;
+                return nullptr;
         }
 
     private:
