@@ -5,7 +5,7 @@ void User::createChat(User *receiver) {
 
     bool flag = false;
     for(const auto& user : chatRegister -> globalUserList())
-        if(user == *receiver)
+        if(*user == *receiver)
             flag = true;
 
     if(flag)

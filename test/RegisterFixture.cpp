@@ -21,4 +21,6 @@ class RegisterFixture : public ::testing::Test {
         ChatRegister reg;
 };
 
-
+TEST_F(RegisterFixture, createChatTest) {
+    firstTestUser->createChat(secondTestUser);
+}

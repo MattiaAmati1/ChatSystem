@@ -25,6 +25,9 @@ class Message {
             return text == right.text && authorName == right.authorName && timestamp == right.timestamp;
         }
 
+        [[nodiscard]] bool isRead() const { return read; }
+        void setRead(const bool read) { this->read = read; }
+
     private:
         std::string text;
         std::string authorName;

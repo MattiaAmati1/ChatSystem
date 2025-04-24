@@ -4,15 +4,15 @@
 #include <string>
 #include <utility>
 
-class ChatRegister;
+#include "ChatRegister.h"
 
 
-class User final{
+class User {
 
     public:
 
         User(std::string name, ChatRegister* r) : username(std::move(name)), chatRegister(r) {
-
+            chatRegister -> addUser(this);
         }
 
         [[nodiscard]] const std::string &getUsername() const { return username; }
@@ -29,5 +29,6 @@ class User final{
         ChatRegister* chatRegister;
 
 };
+
 
 #endif //USER_H

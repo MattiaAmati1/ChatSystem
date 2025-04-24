@@ -1,4 +1,3 @@
-#include "ChatRegister.h"
 #include "User.h"
 
 void ChatRegister::createChat(User *author, User *receiver) {
@@ -21,4 +20,9 @@ void ChatRegister::addMessage(const User *author, const User *receiver, const Me
             chat -> addMessage(msg);
         }
 }
+
+void ChatRegister::addUser(User *user) {
+    userList.push_back(user);
+}
+
 
