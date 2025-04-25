@@ -14,7 +14,8 @@ class User {
         explicit User(std::string name, ChatRegister* reg)
                     : username(std::move(name)), chatRegister(reg) {
 
-            UserList::addUser(*this);
+            if(!UserList::userExists(username))
+                UserList::addUser(*this);
         }
 
         [[nodiscard]] const std::string &getUsername() const { return username; }
@@ -22,7 +23,11 @@ class User {
         void createChat(const std::string &receiverName, const std::string &chatName = "Unnamed Chat") const;
         void sendMessage(const std::string& receiverName, const std::string& messageText) const;
         void sendMessage(const std::string& receiverName, const Message& msg) const;
+        void setMessageToUnread(const std::string &authorName, int index) const;
 
+        //read*() methods return the toString() version of the messages, ready for cout or any type of visualization
+        [[nodiscard]] std::string readUnreadMessage(const std::string &authorName, int index) const;
+        [[nodiscard]] std::string readUnreadMessagesWithWord(const std::string &authorName, const std::string &word) const;
 
         bool operator==(const User &right) const { return this -> username == right.username; }
         ~User() = default;

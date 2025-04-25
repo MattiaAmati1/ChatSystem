@@ -18,6 +18,7 @@ class Message {
         }
 
         [[nodiscard]] std::string getText() const { return text; }
+        [[nodiscard]] std::string getAuthorName() const { return authorName; }
         [[nodiscard]] std::string toString() const { return authorName + "\n" + text + "\n" + std::to_string(timestamp); }
 
         bool operator==(const Message &right) const {

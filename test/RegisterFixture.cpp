@@ -37,17 +37,26 @@ TEST_F(RegisterFixture, messageSendingTest) {
     firstTestUser -> sendMessage(secondTestUser -> getUsername(), msg);
 
     //the test message has just been sent, it is the last in the chatMessages vector
-    Chat tmp = getRegister() -> getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername());
+    Chat& tmp = getRegister() -> getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername());
     ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1), msg);
 
     firstTestUser -> sendMessage(secondTestUser -> getUsername(), "Second Message");
-    //tmp must be re-gathered from the register to observe any changes
-    tmp = getRegister() -> getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername());
     ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1).getText(), "Second Message");
 }
 
+TEST_F(RegisterFixture, messageReadingTest) {
+    firstTestUser -> createChat(secondTestUser -> getUsername());
+    const Message msg(firstTestUser -> getUsername(), "Test Message");
+    firstTestUser -> sendMessage(secondTestUser -> getUsername(), msg);
 
+    ASSERT_EQ(secondTestUser -> readUnreadMessage(firstTestUser -> getUsername(), 0), msg.toString());
+    Chat& tmp = getRegister() -> getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername());
+    ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1).isRead(), true);
 
+    secondTestUser -> setMessageToUnread(firstTestUser -> getUsername(), 0);
+    ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1).isRead(), false);
 
+    ASSERT_EQ(secondTestUser -> readUnreadMessagesWithWord(firstTestUser -> getUsername(), "Test"), msg.toString() + "\n");
+}
 
 

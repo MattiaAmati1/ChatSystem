@@ -44,4 +44,60 @@ void User::sendMessage(const std::string &receiverName, const Message& msg) cons
     chatRegister->addMessage(this -> username, receiverName, msg);
 }
 
+void User::setMessageToUnread(const std::string &authorName, int index) const {
+
+    if(!UserList::userExists(authorName))
+        return;
+
+    if(!chatRegister -> containsChatWithUsers(this -> username, authorName))
+        return;
+
+    if(chatRegister -> getChatWithUsers(this -> username, authorName).getMessageAtPosition(index).getAuthorName() == authorName)
+        chatRegister -> getChatWithUsers(this -> username, authorName).getMessageAtPosition(index).setRead(false);
+
+}
+
+std::string User::readUnreadMessage(const std::string &authorName, const int index) const {
+    if(!UserList::userExists(authorName))
+        return "";
+
+    if(!chatRegister -> containsChatWithUsers(this -> username, authorName))
+        return "";
+
+    Message& tmp = chatRegister -> getChatWithUsers(this -> username, authorName).getMessageAtPosition(index);
+    if(tmp.getAuthorName() != authorName)
+        return "";
+
+    if(tmp.isRead())
+        return "";
+
+
+    tmp.setRead(true);
+    return tmp.toString();
+}
+
+std::string User::readUnreadMessagesWithWord(const std::string &authorName, const std::string &word) const {
+
+    if(!UserList::userExists(authorName))
+        return "";
+
+    if(!chatRegister -> containsChatWithUsers(this -> username, authorName))
+        return "";
+
+    Chat& tmp = chatRegister -> getChatWithUsers(this -> username, authorName);
+    std::string messages;
+
+    for(auto msg : tmp.getMessagesWithWord(word))
+        if(!msg.isRead()) {
+            messages += msg.toString();
+            messages += "\n";
+            msg.setRead(true);
+        }
+
+    return messages;
+}
+
+
+
+
 
