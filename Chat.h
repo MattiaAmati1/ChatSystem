@@ -28,12 +28,31 @@ class Chat{
                 std::cout << msg.toString() << std::endl;
         }
 
-        ~Chat(){ chatMessages.clear(); }
+        [[nodiscard]] int getMessagesAmount() const { return chatMessages.size(); }
+        [[nodiscard]] int getUnreadMessagesAmount() const {
+            int total = 0;
+            for (const auto& msg : chatMessages)
+                if(!msg.isRead())
+                    total++;
 
-        //restituire i-esimo messaggio
-        //poterlo marcare come letto o non letto
-        //ricerca di un messaggio sulla base di una parola
-        //restituire quanti messaggi sono presenti e quanti da leggere
+            return total;
+        }
+
+        Message& getMessageAtPosition(const int index) { return chatMessages.at(index); }
+        std::string getName(){ return name; }
+        void setReadStatus(const int index, const bool readStatus) {chatMessages.at(index).setRead(readStatus); }
+
+        std::vector<Message> getMessagesWithWord(const std::string& word) {
+
+            std::vector<Message> messages;
+            for (auto& msg : chatMessages)
+                if(msg.getText().contains(word))
+                    messages.push_back(msg);
+
+            return messages;
+        }
+
+        ~Chat(){ chatMessages.clear(); }
 
     private:
         std::vector<Message> chatMessages;

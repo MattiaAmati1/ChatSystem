@@ -19,8 +19,9 @@ class User {
 
         [[nodiscard]] const std::string &getUsername() const { return username; }
 
-        void createChat(const std::string& receiverName) const;
+        void createChat(const std::string &receiverName, const std::string &chatName = "Unnamed Chat") const;
         void sendMessage(const std::string& receiverName, const std::string& messageText) const;
+        void sendMessage(const std::string& receiverName, const Message& msg) const;
 
 
         bool operator==(const User &right) const { return this -> username == right.username; }

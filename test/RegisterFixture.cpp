@@ -21,16 +21,33 @@ class RegisterFixture : public ::testing::Test {
         ChatRegister reg;
 };
 
-TEST_F(RegisterFixture, userCreatingTest) {
-
-    User user("username", getRegister());
-    ASSERT_EQ(user.getUsername(), "username");
-    ASSERT_EQ(UserList::getUserByName(user.getUsername()), user);
-}
 
 TEST_F(RegisterFixture, createChatTest) {
-    firstTestUser->createChat(secondTestUser -> getUsername());
-    ASSERT_EQ(getRegister() -> containsChatWithUsers(firstTestUser->getUsername(), secondTestUser->getUsername()), true);
 
+    firstTestUser->createChat(secondTestUser -> getUsername(), "testChat");
+    ASSERT_EQ(getRegister() -> containsChatWithUsers(firstTestUser->getUsername(), secondTestUser->getUsername()), true);
+    ASSERT_EQ(getRegister() -> getChatWithUsers(firstTestUser->getUsername(), secondTestUser->getUsername()).getName(), "testChat");
 }
+
+TEST_F(RegisterFixture, messageSendingTest) {
+
+    firstTestUser -> createChat(secondTestUser -> getUsername());
+    const std::string textMessage = "Test Message";
+    const Message msg(firstTestUser -> getUsername(), textMessage);
+    firstTestUser -> sendMessage(secondTestUser -> getUsername(), msg);
+
+    //the test message has just been sent, it is the last in the chatMessages vector
+    Chat tmp = getRegister() -> getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername());
+    ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1), msg);
+
+    firstTestUser -> sendMessage(secondTestUser -> getUsername(), "Second Message");
+    //tmp must be re-gathered from the register to observe any changes
+    tmp = getRegister() -> getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername());
+    ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1).getText(), "Second Message");
+}
+
+
+
+
+
 

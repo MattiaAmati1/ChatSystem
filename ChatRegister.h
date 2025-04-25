@@ -7,9 +7,10 @@
 class ChatRegister {
 
     public:
-        void createChat(const std::string& authorName, const std::string& receiverName);
-        void addMessage(const std::string& authorName, const std::string& receiverName, const Message& message) const;
-        bool containsChatWithUsers(const std::string& authorName, const std::string& receiverName) const;
+        void createChat(const std::string& authorName, const std::string& receiverName, const std::string& chatName);
+        void addMessage(const std::string& authorName, const std::string& receiverName, const Message& message);
+        [[nodiscard]] bool containsChatWithUsers(const std::string& authorName, const std::string& receiverName) const;
+        Chat& getChatWithUsers(const std::string& authorName, const std::string& receiverName);
 
     private:
 

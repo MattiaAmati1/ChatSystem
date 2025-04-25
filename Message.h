@@ -12,13 +12,12 @@
 class Message {
 
     public:
-        Message(std::string text, std::string author) : text(std::move(text)),
+        Message(std::string author, std::string text) : text(std::move(text)),
                                                         authorName (std::move(author)), read(false){
             timestamp = time(nullptr); //sets timestamp to the date and time the object is instantiated
         }
 
-        [[nodiscard]] std::string getAuthor() const { return authorName; }
-
+        [[nodiscard]] std::string getText() const { return text; }
         [[nodiscard]] std::string toString() const { return authorName + "\n" + text + "\n" + std::to_string(timestamp); }
 
         bool operator==(const Message &right) const {
