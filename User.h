@@ -11,8 +11,7 @@ class User {
 
     public:
 
-        explicit User(std::string name, ChatRegister* reg)
-                    : username(std::move(name)), chatRegister(reg) {
+        explicit User(std::string name, ChatRegister* reg) : username(std::move(name)), chatRegister(reg) {
 
             if(!UserList::userExists(username))
                 UserList::addUser(*this);
