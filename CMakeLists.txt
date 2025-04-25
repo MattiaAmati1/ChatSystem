@@ -11,7 +11,6 @@ set(SOURCE_FILES main.cpp
         Chat.h
         ChatRegister.h
         User.cpp
-        Chat.cpp
         ChatRegister.cpp
         User.cpp
         UserList.h)

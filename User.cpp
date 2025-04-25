@@ -54,10 +54,10 @@ void User::setMessageToUnread(const std::string &authorName, int index) const {
 
     if(chatRegister -> getChatWithUsers(this -> username, authorName).getMessageAtPosition(index).getAuthorName() == authorName)
         chatRegister -> getChatWithUsers(this -> username, authorName).getMessageAtPosition(index).setRead(false);
-
 }
 
 std::string User::readUnreadMessage(const std::string &authorName, const int index) const {
+
     if(!UserList::userExists(authorName))
         return "";
 
@@ -96,8 +96,3 @@ std::string User::readUnreadMessagesWithWord(const std::string &authorName, cons
 
     return messages;
 }
-
-
-
-
-

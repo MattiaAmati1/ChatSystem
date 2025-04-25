@@ -9,7 +9,6 @@
 class Chat{
 
     public:
-
         Chat(std::string firstName, std::string secondName, std::string chatName = "Unnamed Chat") :
                 firstUserName(std::move(firstName)), secondUserName(std::move(secondName)), name(std::move(chatName)) {}
 
@@ -60,7 +59,5 @@ class Chat{
         std::string secondUserName;
         std::string name;
 };
-
-
 
 #endif //CHAT_H

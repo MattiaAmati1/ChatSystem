@@ -3,7 +3,6 @@
 #include <list>
 #include "Chat.h"
 
-
 class ChatRegister {
 
     public:
@@ -13,9 +12,7 @@ class ChatRegister {
         Chat& getChatWithUsers(const std::string& authorName, const std::string& receiverName);
 
     private:
-
         std::list<Chat> chatList;
-
 };
 
 
