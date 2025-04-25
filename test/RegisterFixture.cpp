@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../ChatRegister.h"
+#include "../User.h"
 
 class RegisterFixture : public ::testing::Test {
     public:
@@ -16,11 +16,21 @@ class RegisterFixture : public ::testing::Test {
         User *firstTestUser = nullptr;
         User *secondTestUser = nullptr;
 
-        ChatRegister getRegister() { return reg; }
+        ChatRegister* getRegister() { return &reg; }
     private:
         ChatRegister reg;
 };
 
-TEST_F(RegisterFixture, createChatTest) {
-    firstTestUser->createChat(secondTestUser);
+TEST_F(RegisterFixture, userCreatingTest) {
+
+    User user("username", getRegister());
+    ASSERT_EQ(user.getUsername(), "username");
+    ASSERT_EQ(UserList::getUserByName(user.getUsername()), user);
 }
+
+TEST_F(RegisterFixture, createChatTest) {
+    firstTestUser->createChat(secondTestUser -> getUsername());
+    ASSERT_EQ(getRegister() -> containsChatWithUsers(firstTestUser->getUsername(), secondTestUser->getUsername()), true);
+
+}
+

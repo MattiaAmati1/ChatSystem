@@ -3,19 +3,19 @@
 #include <list>
 #include "Chat.h"
 
-class User;
 
 class ChatRegister {
 
     public:
-        void createChat(User *author, User *receiver);
-        void addMessage(const User *author, const User *receiver, const Message& msg) const;
-        [[nodiscard]] std::list<User*> globalUserList() const { return userList; }
-        void addUser(User *user);
+        void createChat(const std::string& authorName, const std::string& receiverName);
+        void addMessage(const std::string& authorName, const std::string& receiverName, const Message& message) const;
+        bool containsChatWithUsers(const std::string& authorName, const std::string& receiverName) const;
 
     private:
-        std::list<Chat*> chatList;
-        std::list<User*> userList;
+
+        std::list<Chat> chatList;
+
 };
+
 
 #endif //CHATREGISTER_H

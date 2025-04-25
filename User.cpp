@@ -1,21 +1,38 @@
 #include "User.h"
-#include "ChatRegister.h"
+#include <stdexcept>
 
-void User::createChat(User *receiver) {
 
-    bool flag = false;
-    for(const auto& user : chatRegister -> globalUserList())
-        if(*user == *receiver)
-            flag = true;
+User UserList::getUserByName(const std::string &name) {
 
-    if(flag)
-        return;
+    for(const auto& user : globalUserList)
+        if(user.getUsername() == name)
+            return user;
 
-    chatRegister -> createChat(this, receiver);
+    throw std::invalid_argument("User does not exist");
 }
 
-void User::sendMessage(const User &receiver, const std::string& messageText) {
-    const Message msg(username, messageText);
-    chatRegister -> addMessage(this, &receiver, msg);
+bool UserList::userExists(const std::string &name) {
+    for(const auto& user : globalUserList)
+        if(user.getUsername() == name)
+            return true;
+
+    return false;
+}
+
+void User::createChat(const std::string& receiverName) const {
+
+    if(!UserList::userExists(receiverName))
+        return;
+
+    chatRegister->createChat(this -> username, receiverName);
+}
+
+void User::sendMessage(const std::string &receiverName, const std::string &messageText) const {
+
+    if(!UserList::userExists(receiverName))
+        return;
+
+    const Message msg(messageText, this -> username);
+    chatRegister->addMessage(this -> username, receiverName, msg);
 }
 

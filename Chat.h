@@ -5,35 +5,30 @@
 #include <iostream>
 #include <vector>
 #include "Message.h"
-#include "User.h"
 
 class Chat{
 
     public:
 
-        Chat(User* firstUser, User* secondUser, std::string  name = "Unnamed Chat")
-            : firstUser(firstUser), secondUser(secondUser), name(std::move(name)){}
+        Chat(std::string firstName, std::string secondName, std::string chatName = "Unnamed Chat") :
+                firstUserName(std::move(firstName)), secondUserName(std::move(secondName)), name(std::move(chatName)) {}
 
         //adds a warning if the method is called bypassing the return value
-        [[nodiscard]] const User* getFirstUser() const { return firstUser; }
-        [[nodiscard]] const User*getSecondUser() const { return secondUser; }
-        bool operator==(const Chat &right) const;
-
-        void addMessage(const Message& msg) {
-            //controls
-            chatMessages.push_back(msg);
+        [[nodiscard]] std::string getFirstUserName() const { return firstUserName; }
+        [[nodiscard]] std::string getSecondUserName() const { return secondUserName; }
+        bool operator==(const Chat &right) const {
+            return firstUserName == right.firstUserName && secondUserName == right.secondUserName ||
+                   firstUserName == right.secondUserName && secondUserName == right.firstUserName;
         }
+
+        void addMessage(const Message& msg) { chatMessages.push_back(msg); }
 
         void showChatContent() const {
             for (const auto& msg : chatMessages)
                 std::cout << msg.toString() << std::endl;
         }
 
-        ~Chat(){
-            delete firstUser;
-            delete secondUser;
-            chatMessages.clear();
-        }
+        ~Chat(){ chatMessages.clear(); }
 
         //restituire i-esimo messaggio
         //poterlo marcare come letto o non letto
@@ -42,8 +37,8 @@ class Chat{
 
     private:
         std::vector<Message> chatMessages;
-        User* firstUser;
-        User* secondUser;
+        std::string firstUserName;
+        std::string secondUserName;
         std::string name;
 };
 
