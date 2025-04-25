@@ -6,7 +6,6 @@
 #include "ChatRegister.h"
 #include "UserList.h"
 
-
 class User {
 
     public:

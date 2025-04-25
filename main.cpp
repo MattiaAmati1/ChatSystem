@@ -1,5 +1,4 @@
 #include <iostream>
-#include <limits>
 
 #include "ChatRegister.h"
 #include "User.h"
@@ -7,49 +6,57 @@
 int main() {
 
     ChatRegister chatRegister;
-    User* tmp;
-    std::list<User*> users;
-    Message* msg;
-    std::string messageText;
-    Chat* chat;
-    int chats = 0;
+    std::string data;
 
-    //landing screen: sign up or log in (entering username)
-    //once in a user profile:
-        //create a new chat with some other user
-        //send a message to some user (in an already created chat)
-        //show the entire chat with a user
-        //view all unread messages
-        //log out and close
-        //change user, when user changes, display the unread messages amount
+    std::cout << "Enter first username: ";
+    getline(std::cin, data);
 
-    std::cout << "Enter username " << std::endl;
-    std::string name;
-    std::cin >> name;
-    User* loggedUser;
-    users.push_back(loggedUser);
+    const User firstUser(data, &chatRegister);
 
-    int selection;
-    bool programTerminated = false;
-
-    while (!programTerminated) {
-        std::cout << "Enter 1 to create a new chat, 2 to send a message, 3 to switch to an existing user,"
-                     " 4 to create a new user, 5 to show the chat with another user, 6 to view all unread messages,"
-                     " 0 to quit" << std::endl;
-        std::cout << "Logged in as user: " << loggedUser -> getUsername() << std::endl;
-
-        if(!(std::cin >> selection)) { //checks for non-numeric inputs and prevents fatal errors
+    //this control has to be done before User instantiation
+    bool flag = false;
+    do {
+        std::cout << "Enter second username: ";
+        getline(std::cin, data);
+        if(data != firstUser.getUsername())
+            flag = true;
+        else {
+            std::cout << "Name " << data << " already used" << std::endl;
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            selection = -1;
         }
+    } while (!flag);
 
-        switch (selection) {
+    const User secondUser(data, &chatRegister);
 
-            default:
-                std::cout << "Invalid selection" << std::endl;
-            break;
-        }
+    firstUser.createChat(secondUser.getUsername());
+    if(chatRegister.containsChatWithUsers(firstUser.getUsername(), secondUser.getUsername()))
+        std::cout << "Chat created" << std::endl;
+    else
+        return 0;
+
+    std::cout << "Enter message to send from user " << firstUser.getUsername()  << " to " << secondUser.getUsername() << std::endl;
+    getline(std::cin, data);
+    firstUser.sendMessage(secondUser.getUsername(), data);
+
+    std::cout << "Reading of the first message by the receiver: " << std::endl;
+    std::cout << secondUser.readUnreadMessage(firstUser.getUsername(), 0) << std::endl;
+
+    std::cout << "Enter a reply from " << secondUser.getUsername() << " to " << firstUser.getUsername() << std::endl;
+    getline(std::cin, data);
+    Message msg(secondUser.getUsername(), data);
+    secondUser.sendMessage(firstUser.getUsername(), msg);
+
+    std::cout << "Reading of the reply: " << std::endl;
+    std::cout << firstUser.readUnreadMessage(secondUser.getUsername(), 1) << std::endl;
+
+    std::cout << "Enter keyword: " << std::endl;
+    getline(std::cin, data);
+    std::cout << "Showing messages containing word " << data << std::endl;
+
+    //if we know a chat is present in the register, getChatWithUsers() won't throw exceptions
+    if(chatRegister.containsChatWithUsers(firstUser.getUsername(), secondUser.getUsername())) {
+        for(const auto& message : chatRegister.getChatWithUsers(firstUser.getUsername(), secondUser.getUsername()).getMessagesWithWord(data))
+            std::cout << message.toString() << std::endl;
     }
 }
 

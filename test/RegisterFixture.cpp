@@ -2,6 +2,7 @@
 #include "../User.h"
 
 class RegisterFixture : public ::testing::Test {
+
     public:
         void SetUp() override {
             firstTestUser = new User("firstTestUser", &reg);
@@ -17,6 +18,7 @@ class RegisterFixture : public ::testing::Test {
         User *secondTestUser = nullptr;
 
         ChatRegister* getRegister() { return &reg; }
+
     private:
         ChatRegister reg;
 };
@@ -42,9 +44,12 @@ TEST_F(RegisterFixture, messageSendingTest) {
 
     firstTestUser -> sendMessage(secondTestUser -> getUsername(), "Second Message");
     ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1).getText(), "Second Message");
+    ASSERT_EQ(tmp.getUnreadMessagesAmount(), 2);
+    ASSERT_EQ(tmp.getMessagesAmount(), 2);
 }
 
 TEST_F(RegisterFixture, messageReadingTest) {
+
     firstTestUser -> createChat(secondTestUser -> getUsername());
     const Message msg(firstTestUser -> getUsername(), "Test Message");
     firstTestUser -> sendMessage(secondTestUser -> getUsername(), msg);

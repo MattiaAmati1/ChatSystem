@@ -19,7 +19,7 @@ class Message {
 
         [[nodiscard]] std::string getText() const { return text; }
         [[nodiscard]] std::string getAuthorName() const { return authorName; }
-        [[nodiscard]] std::string toString() const { return authorName + "\n" + text + "\n" + std::to_string(timestamp); }
+        [[nodiscard]] std::string toString() const { return authorName + "\n" + text + "\n" + ctime(&timestamp); }
 
         bool operator==(const Message &right) const {
             return text == right.text && authorName == right.authorName && timestamp == right.timestamp;
