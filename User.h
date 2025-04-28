@@ -12,7 +12,7 @@ class User {
 
         explicit User(std::string name, ChatRegister* reg) : username(std::move(name)), chatRegister(reg) {
 
-                UserList::addUser(*this, this -> username);
+                UserList::addUser(*this);
         }
 
         [[nodiscard]] const std::string &getUsername() const { return username; }
