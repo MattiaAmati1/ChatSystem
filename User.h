@@ -12,8 +12,7 @@ class User {
 
         explicit User(std::string name, ChatRegister* reg) : username(std::move(name)), chatRegister(reg) {
 
-            if(!UserList::userExists(username))
-                UserList::addUser(*this);
+                UserList::addUser(*this, this -> username);
         }
 
         [[nodiscard]] const std::string &getUsername() const { return username; }
