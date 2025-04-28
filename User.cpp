@@ -2,14 +2,13 @@
 #include "UserList.h"
 #include <stdexcept>
 
-void UserList::addUser(const User& user, const std::string &username){
-    for(const auto& name : usernames) {
-        if(name == username)
+void UserList::addUser(const User& user){
+
+    for(const auto& u: globalUserList)
+        if(u.getUsername() == user.getUsername())
             return;
-    }
 
     globalUserList.push_back(user);
-    usernames.push_back(username);
 }
 
 
