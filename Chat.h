@@ -41,7 +41,7 @@ class Chat{
         std::string getName(){ return name; }
         void setReadStatus(const int index, const bool readStatus) {chatMessages.at(index).setRead(readStatus); }
 
-        std::vector<Message> getMessagesWithWord(const std::string& word) {
+        [[nodiscard]] std::vector<Message> getMessagesWithWord(const std::string& word) const {
 
             std::vector<Message> messages;
             for (auto& msg : chatMessages)

@@ -62,6 +62,18 @@ TEST_F(RegisterFixture, messageReadingTest) {
     ASSERT_EQ(tmp.getMessageAtPosition(tmp.getMessagesAmount() - 1).isRead(), false);
 
     ASSERT_EQ(secondTestUser -> readUnreadMessagesWithWord(firstTestUser -> getUsername(), "Test"), msg.toString() + "\n");
+
+    //if no message containing a certain word is found, the return vector should be empty
+    const std::string nonPresentWord = "qwertyuiop";
+    std::vector<Message> messages = getRegister()->getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername()).getMessagesWithWord(nonPresentWord);
+    ASSERT_EQ(messages.empty(), true);
+
+    //if one is found, it is in the vector
+    const std::string presentWord = "Test";
+    messages = getRegister()->getChatWithUsers(firstTestUser -> getUsername(), secondTestUser -> getUsername()).getMessagesWithWord(presentWord);
+    ASSERT_EQ(messages.empty(), false);
 }
+
+
 
 
