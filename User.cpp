@@ -1,5 +1,17 @@
 #include "User.h"
+#include "UserList.h"
 #include <stdexcept>
+
+void UserList::addUser(const User& user, const std::string &username){
+    for(const auto& name : usernames) {
+        if(name == username)
+            return;
+    }
+
+    globalUserList.push_back(user);
+    usernames.push_back(username);
+}
+
 
 User UserList::getUserByName(const std::string &name) {
 
@@ -44,7 +56,7 @@ void User::sendMessage(const std::string &receiverName, const Message& msg) cons
     chatRegister->addMessage(this -> username, receiverName, msg);
 }
 
-void User::setMessageToUnread(const std::string &authorName, int index) const {
+void User::setMessageToUnread(const std::string &authorName, const int index) const {
 
     if(!UserList::userExists(authorName))
         return;
